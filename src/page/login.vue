@@ -7,17 +7,15 @@
                 </div>
                 <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" class="demo-ruleForm">
                     <el-form-item prop="acco">
-                        <el-input v-model.number="ruleForm.acco" placeholder="请输入账号" size="large"
-                            prefix-icon="el-icon-s-custom">
+                        <el-input v-model.number="ruleForm.acco" placeholder="请输入账号" prefix-icon="el-icon-s-custom">
                         </el-input>
                     </el-form-item>
                     <el-form-item prop="pass">
-                        <el-input type="password" v-model="ruleForm.pass" placeholder="请输入密码" size="large"
+                        <el-input type="password" v-model="ruleForm.pass" placeholder="请输入密码"
                             prefix-icon="el-icon-lock"></el-input>
                     </el-form-item>
-
                     <el-form-item>
-                        <el-button type="info" @click="submitForm('ruleForm')">登陆</el-button>
+                        <el-button type="info" @click="submitForm('ruleForm')" class="submit-btn">登陆</el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -31,11 +29,15 @@
             var validateAcco = (rule, value, callback) => {
                 if (value === '') {
                     callback(new Error('请输入账号'));
+                } else {
+                    callback();
                 }
             };
             var validatePass = (rule, value, callback) => {
                 if (value === '') {
                     callback(new Error('请输入密码'));
+                } else {
+                    callback();
                 }
             };
             return {
@@ -57,9 +59,17 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        alert('submit!');
+
+                        if (this.ruleForm.acco === 'admin' && this.ruleForm.pass === 'admin') {
+                            this.$router.push('manage')
+                            // alert('submit!!')
+                        }
                     } else {
-                        // console.log('error submit!!');
+                        this.$notify.error({
+                            title: '错误',
+                            message: '请输入正确的用户名密码',
+                            offset: 100
+                        });
                         return false;
                     }
                 });
@@ -80,7 +90,7 @@
         height: 400px;
         background-color: rgba(255, 255, 255, 1);
         position: absolute;
-        top: 50%;
+        top: 40%;
         left: 50%;
         transform: translate(-50%, -50%);
         border-radius: 10px;
@@ -92,7 +102,7 @@
     .logo-container p {
         font-size: 28px;
         font-weight: 700;
-        padding: 28px;
+        padding: 30px;
     }
 
     .demo-ruleForm {
@@ -100,7 +110,33 @@
     }
 
     .el-form-item {
-        margin-bottom: 30px;
+        margin-bottom: 36px;
+    }
+
+    .el-input>>>input {
+        height: 50px;
+        line-height: 50px;
+        padding-left: 40px;
+        padding-right: 30px;
+    }
+
+    .el-input>>>.el-input__prefix {
+        left: 10px;
+    }
+
+    .el-input>>>.el-input__suffix {
+        right: 10px;
+    }
+
+    .el-input>>>i {
+        font-size: 24px;
+        line-height: 50px;
+    }
+
+    .submit-btn {
+        width: 100%;
+        font-size: 18px;
+        padding: 16px 20px;
     }
 
     /* 可以设置不同的进入和离开动画 */

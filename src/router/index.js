@@ -7,6 +7,10 @@ const routes = [
     {
         path: '/',
         component: () => import('../page/login')
+    },
+    {
+        path: '/manage',
+        component: () => import('../page/manage')
     }
 ]
 export default new Router({
