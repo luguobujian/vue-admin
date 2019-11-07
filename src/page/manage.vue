@@ -9,7 +9,6 @@
                 <img src="../assets/logo.png" alt="" class="avatar">
                 <span class="name">
                     <span>admin</span>
-                    <!-- <i class="el-icon-setting"></i> -->
                     <el-dropdown>
                         <span class="el-dropdown-link">
                             <i class="el-icon-setting"></i>
@@ -24,32 +23,34 @@
         </div>
         <div class="container">
             <el-row style="height: 100%;">
-                <el-col :span="3" style="min-height: 100%;background-color: rgb(84, 92, 100);">
-                    <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
-                        background-color="#545c64" text-color="#fff">
-                        <el-submenu index="1">
+                <el-col :span="3" style="height: 100%;background-color:#545c64;">
+                    <el-menu :default-active="defaultActive" background-color="#545c64" text-color="#fff"
+                        active-text-color="#ffd04b" router>
+                        <el-submenu index="manage">
                             <template slot="title">
-                                <i class="el-icon-s-data"></i>
+                                <i class="el-icon-location"></i>
                                 <span>数据统计</span>
                             </template>
                             <el-menu-item-group>
-                                <el-menu-item index="1-1">数据统计</el-menu-item>
-                                <el-menu-item index="1-2">用量统计</el-menu-item>
+                                <el-menu-item index="datum">通览</el-menu-item>
+                                <el-menu-item index="usageDatum">用量</el-menu-item>
                             </el-menu-item-group>
                         </el-submenu>
-                        <el-submenu index="2">
-                            <template slot="title">
-                                <i class="el-icon-s-data"></i>
-                                <span>单位管理</span>
-                            </template>
-                            <el-menu-item-group>
-                                <el-menu-item index="2-1">数据统计</el-menu-item>
-                                <el-menu-item index="2-2">用量统计</el-menu-item>
-                            </el-menu-item-group>
-                        </el-submenu>
+                        <el-menu-item index="2">
+                            <i class="el-icon-menu"></i>
+                            <span slot="title">导航二</span>
+                        </el-menu-item>
+                        <el-menu-item index="3">
+                            <i class="el-icon-document"></i>
+                            <span slot="title">导航三</span>
+                        </el-menu-item>
+                        <el-menu-item index="4">
+                            <i class="el-icon-setting"></i>
+                            <span slot="title">导航四</span>
+                        </el-menu-item>
                     </el-menu>
                 </el-col>
-                <el-col :span="21" style="height: 100%;overflow: auto;">
+                <el-col :span=21 style="height: 100%;overflow:auto">
                     <keep-alive>
                         <router-view></router-view>
                     </keep-alive>
@@ -60,7 +61,11 @@
 </template>
 <script>
     export default {
-
+        computed: {
+            defaultActive: function () {
+                return this.$route.path.replace('/', '');
+            }
+        },
     }
 </script>
 <style scoped>
@@ -138,7 +143,11 @@
         border-radius: 50%;
     }
 
-    .is-opened .el-menu {
+    .el-submenu .el-menu-item {
+        /* background: cornsilk; */
+    }
+
+    /* .is-opened .el-menu {
         background-color: #1f2d3d;
     }
 
@@ -149,5 +158,5 @@
 
     .el-icon-arrow-down {
         font-size: 12px;
-    }
+    } */
 </style>
