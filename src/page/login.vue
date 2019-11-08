@@ -25,6 +25,7 @@
 
 <script>
     export default {
+        name: 'login',
         data() {
             var validateAcco = (rule, value, callback) => {
                 if (value === '') {
@@ -41,6 +42,7 @@
                 }
             };
             return {
+                sharedState: this.$store.state,
                 ruleForm: {
                     acco: '',
                     pass: ''
@@ -59,10 +61,9 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-
                         if (this.ruleForm.acco === 'admin' && this.ruleForm.pass === 'admin') {
+                            window.localStorage.setItem('token', true)
                             this.$router.push('manage')
-                            // alert('submit!!')
                         }
                     } else {
                         this.$notify.error({

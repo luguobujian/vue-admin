@@ -6,7 +6,8 @@ Vue.use(Router)
 const routes = [
     {
         path: '/',
-        component: () => import('../page/login')
+        component: () => import('../page/login'),
+        meta: { requiresAuth: false }
     },
     {
         path: '/manage',
@@ -15,19 +16,39 @@ const routes = [
         children: [{
             path: '',
             component: () => import('../page/home'),
-            meta: ['数据统计']
+            meta: { requiresAuth: true, breadcrumb: ['数据统计'] }
         }, {
             path: '/datum',
             component: () => import('../page/home'),
-            meta: ['数据统计']
+            meta: { requiresAuth: true, breadcrumb: ['数据统计'] }
         },
         {
             path: '/usageDatum',
             component: () => import('../page/usageDatum'),
-            meta: ['用量统计']
+            meta: { requiresAuth: true, breadcrumb: ['用量统计'] }
         }]
     }
 ]
-export default new Router({
+
+const router = new Router({
     routes
 })
+
+router.beforeEach((to, from, next) => {
+    if (to.meta.requiresAuth) {
+        let token = window.localStorage.getItem('token')
+        if (!token) {
+            next({
+                path: '/',
+                query: { redirect: to.fullPath }  // 将跳转的路由path作为参数，登录成功后跳转到该路由
+            })
+        } else {
+            next()
+        }
+    } else {
+        next()
+    }
+})
+
+
+export default router
